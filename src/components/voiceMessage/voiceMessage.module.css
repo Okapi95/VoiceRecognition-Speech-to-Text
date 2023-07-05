@@ -1,0 +1,11 @@
+.voiceMessage {
+  padding: 5px 10px;
+  background-color: #5c6880c4;
+  border-radius: 15px;
+  width: fit-content;
+}
+
+p {
+  display: inline;
+  color: #ff8ee7c4;
+}

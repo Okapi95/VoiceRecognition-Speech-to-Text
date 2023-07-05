@@ -1,0 +1,75 @@
+.app {
+  text-align: center;
+}
+
+.appSection {
+  height: 100vh;
+  width: 100%;
+  padding: 90px 10px;
+  background-color: #282c34;
+  font-size: calc(10px + 2vmin);
+  color: #f3f3f3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.windowOfMessage {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  gap: 15px;
+  background-color: #adadad;
+  border-radius: 15px;
+  overflow-y: auto;
+  width: 800px;
+  padding: 30px;
+}
+
+.windowOfMessage::-webkit-scrollbar {
+  width: 12px;
+  margin: 10px;
+}
+
+.windowOfMessage::-webkit-scrollbar-track {
+  background-color: #adadad;
+  border-radius: 0 15px 15px 0;
+}
+
+.windowOfMessage::-webkit-scrollbar-thumb {
+  background-color: #ff8ee7c4;
+  border-radius: 15px;
+}
+
+.microphoneButton {
+  background-color: #ff8ee7c4;
+  border: none;
+  border-radius: 15px;
+  padding: 5px;
+}
+
+@media (max-width: 1000px) {
+  .windowOfMessage {
+    width: 600px;
+  }
+}
+
+@media (max-width: 800px) {
+  .windowOfMessage {
+    width: 500px;
+  }
+}
+
+@media (max-width: 600px) {
+  .windowOfMessage {
+    width: 400px;
+  }
+}
+
+@media (max-width: 450px) {
+  .windowOfMessage {
+    width: 300px;
+  }
+}
