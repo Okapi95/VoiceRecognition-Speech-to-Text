@@ -43,7 +43,13 @@
   border-radius: 15px;
 }
 
-.microphoneButton {
+.buttons {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+}
+
+.buttons__microphoneButton {
   background-color: #ff8ee7c4;
   border: none;
   border-radius: 15px;
