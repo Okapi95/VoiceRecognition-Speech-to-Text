@@ -19,58 +19,13 @@ function App() {
   recognition.continuous = true;
   recognition.interimResult = true;
 
-  // const [isListening, setIsListening] = useState(false);
-  // const [note, setNote] = useState<string>("");
-
-  // useEffect(() => {
-  //   handleListen();
-  // }, [isListening]);
-
-  // const handleListen = () => {
-  //   if (isListening) {
-  //     mic.start();
-  //     mic.onend = () => {
-  //       console.log("continue..");
-  //       mic.start();
-  //     };
-  //   } else {
-  //     mic.stop();
-  //     console.log("stop");
-  //     mic.onend = () => {
-  //       console.log("Stopped Mic on Click");
-  //     };
-  //   }
-  //   mic.onstart = () => {
-  //     console.log("Mics on");
-  //   };
-
-  //   mic.onresult = (event: any) => {
-  //     console.log(event);
-  //     console.log(Array.from(event.results));
-  //     // const transcript = event.results
-  //     //   .map((result) => result[0])
-  //     //   .map((result) => result.transcript)
-  //     //   .join("");
-  //     const transcript = "";
-  //     console.log(transcript);
-  //     setNote(() => transcript);
-  //     mic.onerror = (event: any) => {
-  //       console.log(event.error);
-  //     };
-  //   };
-  // };
-
   recognition.onsoundend = () => console.log("прием аудио закончен");
 
   const [wordsOnScreen, setWordsOnScreen] = useState<Array<string>>([]);
 
   function handlerRecognitionON() {
     recognition.start();
-    console.log("Идёт распознавание речи");
     recognition.onstart = () => console.log("onstart");
-    setWordsOnScreen(() => ["начали распозновать"]);
-    recognition.onaudiostart = () =>
-      console.log("начинаем принимать аудио, сработал onaudiostart ");
 
     recognition.onresult = (event: any) => {
       console.log("сработал onresult");
@@ -79,10 +34,6 @@ function App() {
         event.results
       );
       console.log(wordsArray.map((item) => item[0].transcript));
-      // console.log("это массив wordsArray");
-
-      // const stringArr = wordsArray.map((item) => item[0].transcript);
-      // console.log(stringArr);
 
       setWordsOnScreen(() => wordsArray.map((item) => item[0].transcript));
     };
@@ -93,7 +44,6 @@ function App() {
       console.log(
         "прием аудио закончен в handlerRecognitionOFF, сработал onsoundend"
       );
-    console.log("stop");
     recognition.stop();
   }
 
