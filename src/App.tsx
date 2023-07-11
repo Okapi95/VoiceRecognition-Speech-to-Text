@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import classes from "./App.module.css";
 import voiceOffSvg from "./icons/voiceOff.svg";
 import voiceOnSvg from "./icons/voiceOn.svg";
@@ -12,6 +12,8 @@ declare global {
 }
 
 function App() {
+  const [words, setWords] = useState<string>(" ");
+
   const SpeechRecognition =
     window.SpeechRecognition || window.webkitSpeechRecognition;
   const recognition = new SpeechRecognition();
@@ -21,21 +23,21 @@ function App() {
 
   recognition.onsoundend = () => console.log("прием аудио закончен");
 
-  const [wordsOnScreen, setWordsOnScreen] = useState<Array<string>>([]);
+  function randomInteger(min: number, max: number) {
+    let rand = min + Math.random() * (max + 1 - min);
+    return Math.floor(rand);
+  }
 
   function handlerRecognitionON() {
     recognition.start();
-    recognition.onstart = () => console.log("onstart");
-
     recognition.onresult = (event: any) => {
-      console.log("сработал onresult");
-
-      const wordsArray: Array<Array<{ transcript: string }>> = Array.from(
-        event.results
-      );
-      console.log(wordsArray.map((item) => item[0].transcript));
-
-      setWordsOnScreen(() => wordsArray.map((item) => item[0].transcript));
+      const phrase =
+        randomInteger(1, 100) +
+        " " +
+        event.results[event.resultIndex][0].transcript +
+        " ";
+      console.log(phrase);
+      setWords((words) => words + phrase);
     };
   }
 
@@ -51,9 +53,7 @@ function App() {
     <div className={classes.app}>
       <section className={classes.appSection}>
         <div className={classes.windowOfMessage}>
-          {wordsOnScreen.map((words) => (
-            <VoiceMessage words1={words} />
-          ))}
+          <VoiceMessage words={words} />
         </div>
         <div className={classes.buttons}>
           <button
