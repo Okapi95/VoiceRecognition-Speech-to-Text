@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import classes from "./App.module.css";
 import voiceOffSvg from "./icons/voiceOff.svg";
 import voiceOnSvg from "./icons/voiceOn.svg";
 import VoiceMessage from "./components/voiceMessage/voiceMessage";
+import { v4 as uuidv4 } from "uuid";
 
 declare global {
   interface Window {
@@ -10,50 +11,47 @@ declare global {
     webkitSpeechRecognition: any;
   }
 }
-
+const SpeechRecognition =
+  window.SpeechRecognition || window.webkitSpeechRecognition;
 function App() {
-  const [words, setWords] = useState<string>(" ");
+  const [transcript, setTranscript] = useState<string[][]>([[" "]]);
+  const recognitionRef = useRef<any>(new SpeechRecognition());
 
-  const SpeechRecognition =
-    window.SpeechRecognition || window.webkitSpeechRecognition;
-  const recognition = new SpeechRecognition();
-  recognition.lang = "ru-RU";
-  recognition.continuous = true;
-  recognition.interimResult = true;
-
-  recognition.onsoundend = () => console.log("прием аудио закончен");
+  recognitionRef.current.lang = "ru-RU";
+  recognitionRef.current.continuous = true;
+  recognitionRef.current.interimResults = true;
 
   function randomInteger(min: number, max: number) {
     let rand = min + Math.random() * (max + 1 - min);
     return Math.floor(rand);
   }
 
+  let phrase: string[] = [];
   function handlerRecognitionON() {
-    recognition.start();
-    recognition.onresult = (event: any) => {
-      const phrase =
+    recognitionRef.current.start();
+    recognitionRef.current.onresult = (event: any) => {
+      const word =
         randomInteger(1, 100) +
         " " +
         event.results[event.resultIndex][0].transcript +
         " ";
-      console.log(phrase);
-      setWords((words) => words + phrase);
+      phrase[event.resultIndex] = word;
+
+      setTranscript(() => [phrase]);
     };
   }
 
   function handlerRecognitionOFF() {
-    recognition.onsoundend = () =>
-      console.log(
-        "прием аудио закончен в handlerRecognitionOFF, сработал onsoundend"
-      );
-    recognition.stop();
+    recognitionRef.current.stop();
   }
 
   return (
     <div className={classes.app}>
       <section className={classes.appSection}>
         <div className={classes.windowOfMessage}>
-          <VoiceMessage words={words} />
+          {transcript[0].map((item) => (
+            <VoiceMessage key={uuidv4()} words={item} />
+          ))}
         </div>
         <div className={classes.buttons}>
           <button
